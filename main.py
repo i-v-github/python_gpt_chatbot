@@ -1,15 +1,22 @@
-import openai
 from settings import settings
+from openai import OpenAI
 
-openai.api_key = settings.openai_key
+client = OpenAI(
+    api_key=settings.openai_key
+)
 
 
 def chat_gpt_bot(prompt):
-    response = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{'role': 'user', 'content': prompt}]
+        messages=[
+            {
+                'role': 'user',
+                'content': prompt
+            }
+        ]
     )
-    return response.choices[0].message.content.strip()
+    return completion.choices[0].message.content.strip()
 
 
 if __name__ == '__main__':
